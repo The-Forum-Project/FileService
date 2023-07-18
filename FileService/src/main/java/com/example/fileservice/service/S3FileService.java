@@ -29,13 +29,13 @@ public class S3FileService {
         this.s3Client = s3Client;
     }
 
-    public String uploadFile(String key, MultipartFile file) {
+    public String uploadFile(MultipartFile file) {
         try{
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
-
+            metadata.setContentType(file.getContentType());
+            String key = file.getOriginalFilename();
             System.out.println("key: " + key);
-            System.out.println("file name: " + file.getOriginalFilename());
             //PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, file.getOriginalFilename(), tempFile);
 
             s3Client.putObject(bucketName, key, file.getInputStream(), metadata);
